@@ -52,9 +52,11 @@ func main() {
 	url := "https://github.com/AlexOberhofer/SDL2-GNUBoy.git"
 	directory := "./backup"
 
-	//fmt.Printf("The following repositories will be cloned: \n")
+	fmt.Printf("The following repositories will be cloned: \n")
 
-	//ListRepositories()
+	ListRepositories()
+
+	//GetStats()
 
 	time := GetCurrentTimeStamp()
 
