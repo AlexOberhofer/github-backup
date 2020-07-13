@@ -1,9 +1,22 @@
-A Github backup utility written in go
+## A Github backup utility written in Go
 
-This project is in early development and is currently hard coded to my repositories.
+This project is in early development 
 
-It will become more modular as it becomes more mature
+## Usage
 
+Query public repositories:
+
+```
+$ ./git-backup -q <username>
+```
+
+Clone single repository:
+
+```
+$ ./git-backup -cs <url>
+```
+
+## Info
 License: GPLv3
 
 by Alex Oberhofer
