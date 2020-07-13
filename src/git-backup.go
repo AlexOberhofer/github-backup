@@ -60,8 +60,7 @@ func main() {
 
 	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
 
-	//url := "https://github.com/AlexOberhofer/SDL2-GNUBoy.git"
-	directory := "./repo"
+	directory := "./my-repo"
 
 	//fmt.Printf("The following repositories will be cloned: \n")
 
@@ -72,12 +71,9 @@ func main() {
 	}
 
 	if *url != "" {
+		CreateDirIfNotExist(directory)
 		DoAClone(*url, directory)
 	}
-
-	CreateDirIfNotExist(directory)
-
-	//DoAClone(url, directory)
 
 	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())
 }

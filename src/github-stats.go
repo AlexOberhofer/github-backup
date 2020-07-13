@@ -24,6 +24,7 @@ func GetStats(username string) {
 
 	for _, repos := range repos {
 		fmt.Printf("# Repository Name: %s\n", repos.GetName())
+		fmt.Printf("# Git URL: %s\n", repos.GetGitURL())
 	}
 
 	if err != nil {
