@@ -10,20 +10,6 @@ import (
 	"github.com/go-git/go-git"
 )
 
-var repositories [5]string = [5]string{
-	"https://github.com/AlexOberhofer/SDL2-GNUBoy.git",
-	"https://github.com/AlexOberhofer/Space-Invaders.git",
-	"https://github.com/AlexOberhofer/Chip-8-Emulator.git",
-	"https://github.com/AlexOberhofer/pylife.git",
-	"https://github.com/AlexOberhofer/sdl2-doom.git"}
-
-func ListRepositories() {
-	for _, element := range repositories {
-		fmt.Printf(element)
-		fmt.Printf("\n")
-	}
-}
-
 func DoAClone(url string) {
 	fmt.Printf("Attempting to clone repository: %s\n", url)
 
