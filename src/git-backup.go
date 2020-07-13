@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"strings"
 
 	"github.com/go-git/go-git"
 )
@@ -23,10 +24,18 @@ func ListRepositories() {
 	}
 }
 
-func DoAClone(url string, directory string) {
+func DoAClone(url string) {
 	fmt.Printf("Attempting to clone repository: %s\n", url)
 
-	git.PlainClone(directory, false, &git.CloneOptions{
+	//pull repo name
+	urlStrings := strings.Split(url, "/")
+	repoNameLong := urlStrings[len(urlStrings) - 1]	
+	repoNameLongSplit := strings.Split(repoNameLong, ".")
+	repoName := repoNameLongSplit[0]
+
+	CreateDirIfNotExist(repoName)
+
+	git.PlainClone(repoName, false, &git.CloneOptions{
 		URL:               url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
@@ -60,7 +69,7 @@ func main() {
 
 	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
 
-	directory := "./my-repo"
+	//directory := "./my-repo"
 
 	//fmt.Printf("The following repositories will be cloned: \n")
 
@@ -71,8 +80,7 @@ func main() {
 	}
 
 	if *url != "" {
-		CreateDirIfNotExist(directory)
-		DoAClone(*url, directory)
+		DoAClone(*url)
 	}
 
 	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())

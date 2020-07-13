@@ -1,7 +1,13 @@
-ECHO "Deploying Go Dependencies..."
+::Script to setup project dependencies
 
-go get -u -v -f all
+ECHO OFF
 
-ECHO "DONE!"
+ECHO Deploying Go Dependencies...
+
+go get github.com/go-git/go-git
+
+go get github.com/google/go-github/github
+
+ECHO DONE!
 
 EXIT \b
