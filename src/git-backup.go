@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"time"
@@ -22,7 +23,7 @@ func ListRepositories() {
 	}
 }
 
-func DoAllClones(url string, directory string) {
+func DoAClone(url string, directory string) {
 	fmt.Printf("Attempting to clone repository: %s\n", url)
 
 	git.PlainClone(directory, false, &git.CloneOptions{
@@ -31,6 +32,7 @@ func DoAllClones(url string, directory string) {
 	})
 }
 
+//TODO probably move to file operations file
 func CreateDirIfNotExist(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = os.MkdirAll(dir, 0755)
@@ -40,37 +42,42 @@ func CreateDirIfNotExist(dir string) {
 	}
 }
 
+//TODO (actually make some flags...)
 func Usage() {
-	fmt.Printf("Usage: \n")
+	fmt.Printf("Usage: -q <username> \n")
 }
 
+//Return current timestamp (to be used for backup filename)
 func GetCurrentTimeStamp() string {
 	return time.Now().Format(time.RFC850)
 }
 
 func main() {
-	url := "https://github.com/AlexOberhofer/SDL2-GNUBoy.git"
-	directory := "./backup"
 
-	fmt.Printf("The following repositories will be cloned: \n")
+	username := flag.String("q", "", "Github Username to query")
+	url := flag.String("cs", "", "Single Repository URL to clone")
+	flag.Parse()
 
-	ListRepositories()
+	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
 
-	//GetStats()
+	//url := "https://github.com/AlexOberhofer/SDL2-GNUBoy.git"
+	directory := "./repo"
 
-	time := GetCurrentTimeStamp()
+	//fmt.Printf("The following repositories will be cloned: \n")
+
+	//ListRepositories()
+
+	if *username != "" {
+		GetStats(*username)
+	}
+
+	if *url != "" {
+		DoAClone(*url, directory)
+	}
 
 	CreateDirIfNotExist(directory)
 
-	fmt.Printf(time)
-	fmt.Printf("\n")
+	//DoAClone(url, directory)
 
-	fmt.Printf("Attempting to clone repository: %s\n", url)
-
-	//git.PlainClone(directory, false, &git.CloneOptions{
-	//URL:               url,
-	//	RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
-	//})
-
-	fmt.Printf("Completed!\n")
+	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())
 }
