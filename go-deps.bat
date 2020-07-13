@@ -1,6 +1,6 @@
 ::Script to setup project dependencies
 
-ECHO OFF
+@ECHO OFF
 
 ECHO Deploying Go Dependencies...
 
