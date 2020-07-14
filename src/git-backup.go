@@ -38,6 +38,7 @@ func main() {
 
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
+	userPublicClone := flag.String("cu", "", "Clone all public repositories for user")
 	flag.Parse()
 
 	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
@@ -53,8 +54,11 @@ func main() {
 	}
 
 	if *url != "" {
-		//DoAClone(*url)
-		DoACloneDir(*url, "backup/")
+		DoAClone(*url)
+	}
+
+	if *userPublicClone != "" {
+		CloneAllPublicRepos(*userPublicClone)
 	}
 
 	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())

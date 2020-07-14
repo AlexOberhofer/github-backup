@@ -74,6 +74,7 @@ func CloneAllPublicRepos(username string) {
 
 	for _, repos := range repos {
 		fmt.Printf("#Cloning: %s...\n", repos.GetName())
+		DoACloneDir(repos.GetGitURL(), "backup/")
 	}
 
 	if err != nil {
