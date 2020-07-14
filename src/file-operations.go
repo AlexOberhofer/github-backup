@@ -1,5 +1,5 @@
 /* ********************************************************************************
-*    Git Backup Utility Driver
+*    File Operations
 *    Copyright (C) 2020  Alex Oberhofer
 *
 *    This program is free software: you can redistribute it and/or modify
@@ -18,44 +18,16 @@
 
 package main
 
-import (
-	"flag"
-	"fmt"
-	"time"
-)
+import "os"
 
-//TODO (actually make some flags...)
-func Usage() {
-	fmt.Printf("Usage: -q <username> \n")
-}
-
-//Return current timestamp (to be used for backup filename)
-func GetCurrentTimeStamp() string {
-	return time.Now().Format(time.RFC850)
-}
-
-func main() {
-
-	username := flag.String("q", "", "Github Username to query")
-	url := flag.String("cs", "", "Single Repository URL to clone")
-	flag.Parse()
-
-	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
-
-	//directory := "./my-repo"
-
-	//fmt.Printf("The following repositories will be cloned: \n")
-
-	//ListRepositories()
-
-	if *username != "" {
-		GetStats(*username)
+// CreateDirIfNotExist -
+//
+// Creates a directory if it doesn't exist
+func CreateDirIfNotExist(dir string) {
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		err = os.MkdirAll(dir, 0755)
+		if err != nil {
+			panic(err)
+		}
 	}
-
-	if *url != "" {
-		//DoAClone(*url)
-		DoACloneDir(*url, "backup/")
-	}
-
-	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())
 }
