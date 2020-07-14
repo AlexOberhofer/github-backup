@@ -48,16 +48,18 @@ func DeleteBackupFromDir(dir string) {
 
 	fmt.Printf("You are about to remove the following directory : %s\n", dir)
 
-	fmt.Printf("Proceed??? (y/n) ->")
-	proceed, _ := consoleReader.ReadString('\n')
+	fmt.Printf("Proceed??? Press any key to continue or Ctrl + C to quit. ->")
 
-	if proceed == "y" || proceed == "Y" {
+	proceed := ""
+	proceed, _ = consoleReader.ReadString('\n')
+
+	if proceed != "" {
 		err := os.RemoveAll(dir)
 		if err != nil {
 			log.Fatal(err)
 		}
 	} else {
-		fmt.Printf("Will not remove the following directory : %s\n", dir)
+		fmt.Printf("\nWill not remove the following directory : %s\n", dir)
 		fmt.Printf("Exiting...\n")
 		os.Exit(1)
 	}

@@ -73,7 +73,6 @@ func CloneAllPublicRepos(username string) {
 	repos, _, err := client.Repositories.List(ctx, username, nil)
 
 	for _, repos := range repos {
-		fmt.Printf("#Cloning: %s...\n", repos.GetName())
 		DoACloneDir(repos.GetGitURL(), "backup/")
 	}
 
