@@ -18,11 +18,17 @@
 
 package main
 
-import "os"
+import (
+	"bufio"
+	"fmt"
+	"log"
+	"os"
+)
 
 // CreateDirIfNotExist -
 //
 // Creates a directory if it doesn't exist
+////////////////////////////////////////////////////////////////////////
 func CreateDirIfNotExist(dir string) {
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
 		err = os.MkdirAll(dir, 0755)
@@ -30,4 +36,30 @@ func CreateDirIfNotExist(dir string) {
 			panic(err)
 		}
 	}
+}
+
+// DeleteBackupFromDir -
+//
+// Deletes a backup from an unzipped directory
+////////////////////////////////////////////////////////////////////////
+func DeleteBackupFromDir(dir string) {
+
+	consoleReader := bufio.NewReader(os.Stdin)
+
+	fmt.Printf("You are about to remove the following directory : %s\n", dir)
+
+	fmt.Printf("Proceed??? (y/n) ->")
+	proceed, _ := consoleReader.ReadString('\n')
+
+	if proceed == "y" || proceed == "Y" {
+		err := os.RemoveAll(dir)
+		if err != nil {
+			log.Fatal(err)
+		}
+	} else {
+		fmt.Printf("Will not remove the following directory : %s\n", dir)
+		fmt.Printf("Exiting...\n")
+		os.Exit(1)
+	}
+
 }

@@ -36,18 +36,14 @@ func GetCurrentTimeStamp() string {
 
 func main() {
 
+	//parse program arguments
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
 	userPublicClone := flag.String("cu", "", "Clone all public repositories for user")
+	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 	flag.Parse()
 
 	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
-
-	//directory := "./my-repo"
-
-	//fmt.Printf("The following repositories will be cloned: \n")
-
-	//ListRepositories()
 
 	if *username != "" {
 		GetStats(*username)
@@ -59,6 +55,10 @@ func main() {
 
 	if *userPublicClone != "" {
 		CloneAllPublicRepos(*userPublicClone)
+	}
+
+	if *removeBackupFromDir != "" {
+		DeleteBackupFromDir(*removeBackupFromDir)
 	}
 
 	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())
