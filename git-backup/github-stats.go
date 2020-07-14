@@ -47,7 +47,7 @@ func DoAClone(url string) {
 }
 
 func DoACloneDir(url string, dir string) {
-	fmt.Printf("Attempting to clone repository: %s\n", url)
+	fmt.Printf("# Attempting to clone repository: %s\n", url)
 
 	//pull repo name
 	urlStrings := strings.Split(url, "/")

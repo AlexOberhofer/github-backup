@@ -1,6 +1,14 @@
-## A Github backup utility written in Go
+## Github-Backup
 
-This project is in early development 
+A utility to backup github repositories
+
+Written in Go
+
+## Building
+
+```
+$ go build github-backup
+```
 
 ## Usage
 
@@ -14,6 +22,18 @@ Clone single repository:
 
 ```
 $ ./git-backup -cs <url>
+```
+
+Clone all public repositories for user
+
+```
+$ ./git-backup -cu <username>
+```
+
+Delete local backup directory
+
+```
+$ ./git-backup -r <directory>
 ```
 
 ## Info

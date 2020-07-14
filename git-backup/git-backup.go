@@ -39,11 +39,14 @@ func main() {
 	//parse program arguments
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
-	userPublicClone := flag.String("cu", "", "Clone all public repositories for user")
+	userPublicClone := flag.String("cu", "", "Clone all public repositories for GitHub user")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 	flag.Parse()
 
-	fmt.Printf("Backup Utility started: %s\n", GetCurrentTimeStamp())
+	start := time.Now()
+	fmt.Printf("###################################################################################\n")
+	fmt.Printf("# Backup Utility started: %s\n", GetCurrentTimeStamp())
+	fmt.Printf("###################################################################################\n")
 
 	if *username != "" {
 		GetStats(*username)
@@ -61,5 +64,12 @@ func main() {
 		DeleteBackupFromDir(*removeBackupFromDir)
 	}
 
-	fmt.Printf("Backup Utility completed: %s\n", GetCurrentTimeStamp())
+	t := time.Now()
+	elapsed := t.Sub(start)
+
+	fmt.Printf("###################################################################################\n")
+	fmt.Printf("# Backup Utility completed: %s\n", GetCurrentTimeStamp())
+	fmt.Printf("# Backup finished in %s\n ", elapsed)
+	fmt.Printf("###################################################################################\n")
+
 }
