@@ -21,6 +21,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"os"
 	"time"
 )
 
@@ -40,6 +41,7 @@ func main() {
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
 	userPublicClone := flag.String("cu", "", "Clone all public repositories for GitHub user")
+	userPublicCloneAndTar := flag.String("cut", "", "Clone and Tar all public repositories for GitHub user")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 	flag.Parse()
 
@@ -58,6 +60,21 @@ func main() {
 
 	if *userPublicClone != "" {
 		CloneAllPublicRepos(*userPublicClone)
+	}
+
+	if *userPublicCloneAndTar != "" {
+		CloneAllPublicRepos(*userPublicCloneAndTar)
+		writer, writerErr := os.Create("./backup.tar")
+
+		if writerErr != nil {
+			panic(writerErr)
+		}
+
+		err := Tar("./backup", writer)
+
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	if *removeBackupFromDir != "" {
