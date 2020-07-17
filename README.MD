@@ -4,6 +4,14 @@ A utility to backup github repositories
 
 Written in Go
 
+## Status
+
+This project only really exists to fit my personal use case. Feel free to fork or use the code as you please. (Within the terms of the GPL)
+
+TODO:
+- Tar/Zipping archives
+- pwd/key authorizaiton
+
 ## Building
 
 ```
