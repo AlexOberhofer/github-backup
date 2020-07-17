@@ -42,7 +42,9 @@ func main() {
 	url := flag.String("cs", "", "Single Repository URL to clone")
 	userPublicClone := flag.String("cu", "", "Clone all public repositories for GitHub user")
 	userPublicCloneAndTar := flag.String("cut", "", "Clone and Tar all public repositories for GitHub user")
+	userPublicCloneTarGZ := flag.String("tgz", "", "Clone, Tar, and Gzip all public repositories for GitHub user")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
+
 	flag.Parse()
 
 	start := time.Now()
@@ -63,7 +65,13 @@ func main() {
 	}
 
 	if *userPublicCloneAndTar != "" {
+
 		CloneAllPublicRepos(*userPublicCloneAndTar)
+
+		fmt.Printf("###################################################################################\n")
+		fmt.Printf("# Tar started: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("###################################################################################\n")
+
 		writer, writerErr := os.Create("./backup.tar")
 
 		if writerErr != nil {
@@ -75,6 +83,36 @@ func main() {
 		if err != nil {
 			panic(err)
 		}
+
+		fmt.Printf("###################################################################################\n")
+		fmt.Printf("# Tar finished: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("###################################################################################\n")
+	}
+
+	if *userPublicCloneTarGZ != "" {
+
+		CloneAllPublicRepos(*userPublicCloneTarGZ)
+
+		fmt.Printf("###################################################################################\n")
+		fmt.Printf("# Tar + Gzip started: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("###################################################################################\n")
+
+		writer, writerErr := os.Create("./backup.tar.gz")
+
+		if writerErr != nil {
+			panic(writerErr)
+		}
+
+		err := TarGZ("./backup", writer)
+
+		if err != nil {
+			panic(err)
+		}
+
+		fmt.Printf("###################################################################################\n")
+		fmt.Printf("# Tar + Gzip finished: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("###################################################################################\n")
+
 	}
 
 	if *removeBackupFromDir != "" {
