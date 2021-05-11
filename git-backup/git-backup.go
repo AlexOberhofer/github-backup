@@ -41,7 +41,7 @@ func main() {
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
 	userPublicClone := flag.String("cu", "", "Clone all public repositories this access token")
-	userPublicCloneAndTar := flag.String("cut", "", "Clone and Tar all public repositories for " +
+	userPublicCloneAndTar := flag.String("ct", "", "Clone and Tar all public repositories for " +
 		"this access token")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 
@@ -72,13 +72,13 @@ func main() {
 		fmt.Printf("# Tar started: %s\n", GetCurrentTimeStamp())
 		fmt.Printf("###################################################################################\n")
 
-		writer, writerErr := os.Create("./backup.tar")
+		writer, writerErr := os.Create("./" + getBackupDirName() +".tar")
 
 		if writerErr != nil {
 			panic(writerErr)
 		}
 
-		err := Tar("./backup", writer)
+		err := Tar(getBackupDirName() + "/", writer)
 
 		if err != nil {
 			panic(err)

@@ -29,7 +29,6 @@ import (
 	"strings"
 )
 
-
 //FIXME add personal token support
 func DoAClone(url string) {
 	fmt.Printf("Attempting to clone repository: %s\n", url)
@@ -91,9 +90,9 @@ func CloneAllRepos(username string) {
 			repoName := urlStrings[1]
 			cloneUrl := "https://" + getAuthToken() + ":x-oauth-basic@" + repoName
 
-			DoACloneDir(cloneUrl, "backup/ ", repos.GetName())
+			DoACloneDir(cloneUrl, getBackupDirName() + "/", repos.GetName())
 		} else {
-			DoACloneDir(repos.GetGitURL(), "backup/ ",  repos.GetName())
+			DoACloneDir(repos.GetGitURL(), getBackupDirName() + "/",  repos.GetName())
 		}
 
 

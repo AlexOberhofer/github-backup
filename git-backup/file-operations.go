@@ -28,7 +28,11 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 )
+
+var runTimestamp string = time.Now().Format(time.RFC822Z)
+
 
 // CreateDirIfNotExist -
 //
@@ -80,6 +84,10 @@ func getAuthToken() string {
 	}
 
 	return string(data)
+}
+
+func getBackupDirName() string {
+	return "git-backup-" + strings.ReplaceAll(strings.ReplaceAll(runTimestamp, " ", ""), ":", "")
 }
 
 // Tar -
