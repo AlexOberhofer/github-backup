@@ -92,7 +92,6 @@ func CloneAllRepos(username string) {
 
 	for _, repos := range pubRepos {
 		DoACloneDir(repos.GetGitURL(), getBackupDirName() + "/",  repos.GetName())
-
 	}
 
 	for _, repos := range privateRepos {

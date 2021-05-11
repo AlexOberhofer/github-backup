@@ -21,6 +21,8 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
+	"os"
 	"time"
 )
 
@@ -73,10 +75,10 @@ func main() {
 
 		zipit(getBackupDirName() + "/", getBackupDirName() + ".zip")
 
-		/*err := os.RemoveAll(getBackupDirName() + "/")
+		err := os.RemoveAll(getBackupDirName() + "/")
 		if err != nil {
 			log.Fatal(err)
-		}*/
+		}
 
 		fmt.Printf("###################################################################################\n")
 		fmt.Printf("# Zip finished: %s\n", GetCurrentTimeStamp())
