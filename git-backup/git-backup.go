@@ -21,7 +21,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 	"time"
 )
 
@@ -40,8 +39,8 @@ func main() {
 	//parse program arguments
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
-	userPublicClone := flag.String("cu", "", "Clone all public repositories this access token")
-	userPublicCloneAndTar := flag.String("ct", "", "Clone and Tar all public repositories for " +
+	userPublicClone := flag.String("cu", "", "Clone all public repositories for this access token")
+	userPublicCloneAndZip := flag.String("cz", "", "Clone and Tar all public repositories for " +
 		"this access token")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 
@@ -64,28 +63,19 @@ func main() {
 		CloneAllRepos(*userPublicClone)
 	}
 
-	if *userPublicCloneAndTar != "" {
+	if *userPublicCloneAndZip != "" {
 
-		CloneAllRepos(*userPublicCloneAndTar)
-
-		fmt.Printf("###################################################################################\n")
-		fmt.Printf("# Tar started: %s\n", GetCurrentTimeStamp())
-		fmt.Printf("###################################################################################\n")
-
-		writer, writerErr := os.Create("./" + getBackupDirName() +".tar")
-
-		if writerErr != nil {
-			panic(writerErr)
-		}
-
-		err := Tar(getBackupDirName() + "/", writer)
-
-		if err != nil {
-			panic(err)
-		}
+		CloneAllRepos(*userPublicCloneAndZip)
 
 		fmt.Printf("###################################################################################\n")
-		fmt.Printf("# Tar finished: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("# Zip started: %s\n", GetCurrentTimeStamp())
+		fmt.Printf("###################################################################################\n")
+
+		zipit(getBackupDirName() + "/", getBackupDirName() + ".zip")
+
+
+		fmt.Printf("###################################################################################\n")
+		fmt.Printf("# Zip finished: %s\n", GetCurrentTimeStamp())
 		fmt.Printf("###################################################################################\n")
 	}
 
