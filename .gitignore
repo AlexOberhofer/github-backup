@@ -1,2 +1,4 @@
 *.exe
 backup
+.idea
+.token

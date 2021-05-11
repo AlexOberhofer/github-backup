@@ -6,11 +6,7 @@ Written in Go
 
 ## Status
 
-This project only really exists to fit my personal use case. Feel free to fork or use the code as you please. (Within the terms of the GPL)
-
-TODO:
-- Tar/Zipping archives
-- pwd/key authorizaiton
+This project only really exists to fit my personal use case. Feel free to fork or use the code as you please. 
 
 ## Building
 
@@ -18,13 +14,15 @@ TODO:
 $ go build github-backup
 ```
 
+## Setup
+
+Requires github personal access token to use.
+
+```
+echo "MY_GITHUB_ACCESS_TOKEN" >> .token
+```
+
 ## Usage
-
-Query public repositories:
-
-```
-$ ./git-backup -q <username>
-```
 
 Clone single repository:
 
@@ -36,6 +34,12 @@ Clone all public repositories for user
 
 ```
 $ ./git-backup -cu <username>
+```
+
+Clone all repositories for personal access token user
+
+```
+$ ./git-backup -cu PERSONAL_ACCESS_TOKEN
 ```
 
 Delete local backup directory

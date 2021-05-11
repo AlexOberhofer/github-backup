@@ -40,9 +40,9 @@ func main() {
 	//parse program arguments
 	username := flag.String("q", "", "Github Username to query")
 	url := flag.String("cs", "", "Single Repository URL to clone")
-	userPublicClone := flag.String("cu", "", "Clone all public repositories for GitHub user")
-	userPublicCloneAndTar := flag.String("cut", "", "Clone and Tar all public repositories for GitHub user")
-	userPublicCloneTarGZ := flag.String("tgz", "", "Clone, Tar, and Gzip all public repositories for GitHub user")
+	userPublicClone := flag.String("cu", "", "Clone all public repositories this access token")
+	userPublicCloneAndTar := flag.String("cut", "", "Clone and Tar all public repositories for " +
+		"this access token")
 	removeBackupFromDir := flag.String("r", "", "Remove backup directory")
 
 	flag.Parse()
@@ -61,12 +61,12 @@ func main() {
 	}
 
 	if *userPublicClone != "" {
-		CloneAllPublicRepos(*userPublicClone)
+		CloneAllRepos(*userPublicClone)
 	}
 
 	if *userPublicCloneAndTar != "" {
 
-		CloneAllPublicRepos(*userPublicCloneAndTar)
+		CloneAllRepos(*userPublicCloneAndTar)
 
 		fmt.Printf("###################################################################################\n")
 		fmt.Printf("# Tar started: %s\n", GetCurrentTimeStamp())
@@ -87,32 +87,6 @@ func main() {
 		fmt.Printf("###################################################################################\n")
 		fmt.Printf("# Tar finished: %s\n", GetCurrentTimeStamp())
 		fmt.Printf("###################################################################################\n")
-	}
-
-	if *userPublicCloneTarGZ != "" {
-
-		CloneAllPublicRepos(*userPublicCloneTarGZ)
-
-		fmt.Printf("###################################################################################\n")
-		fmt.Printf("# Tar + Gzip started: %s\n", GetCurrentTimeStamp())
-		fmt.Printf("###################################################################################\n")
-
-		writer, writerErr := os.Create("./backup.tar.gz")
-
-		if writerErr != nil {
-			panic(writerErr)
-		}
-
-		err := TarGZ("./backup", writer)
-
-		if err != nil {
-			panic(err)
-		}
-
-		fmt.Printf("###################################################################################\n")
-		fmt.Printf("# Tar + Gzip finished: %s\n", GetCurrentTimeStamp())
-		fmt.Printf("###################################################################################\n")
-
 	}
 
 	if *removeBackupFromDir != "" {

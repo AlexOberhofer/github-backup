@@ -21,14 +21,16 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/go-git/go-git"
+	"github.com/google/go-github/github"
+	"golang.org/x/oauth2"
 	"log"
 	"os"
 	"strings"
-
-	"github.com/go-git/go-git"
-	"github.com/google/go-github/github"
 )
 
+
+//FIXME add personal token support
 func DoAClone(url string) {
 	fmt.Printf("Attempting to clone repository: %s\n", url)
 
@@ -46,8 +48,8 @@ func DoAClone(url string) {
 	})
 }
 
-func DoACloneDir(url string, dir string) {
-	fmt.Printf("# Attempting to clone repository: %s\n", url)
+func DoACloneDir(url string, dir string, repositoryName string) {
+	fmt.Printf("# Attempting to clone repository: %s\n", repositoryName)
 
 	//pull repo name
 	urlStrings := strings.Split(url, "/")
@@ -65,15 +67,36 @@ func DoACloneDir(url string, dir string) {
 	})
 }
 
-func CloneAllPublicRepos(username string) {
+func CloneAllRepos(username string) {
+
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: getAuthToken()},
+	)
+
 	ctx := context.Background()
 
-	client := github.NewClient(nil)
+	tc := oauth2.NewClient(ctx, ts)
+
+	client := github.NewClient(tc)
+
+	if username == "PERSONAL_ACCESS_TOKEN" {
+		username = ""
+	}
 
 	repos, _, err := client.Repositories.List(ctx, username, nil)
 
 	for _, repos := range repos {
-		DoACloneDir(repos.GetGitURL(), "backup/")
+		if repos.GetPrivate() == true {
+			urlStrings := strings.Split(repos.GetGitURL(), "//")
+			repoName := urlStrings[1]
+			cloneUrl := "https://" + getAuthToken() + ":x-oauth-basic@" + repoName
+
+			DoACloneDir(cloneUrl, "backup/ ", repos.GetName())
+		} else {
+			DoACloneDir(repos.GetGitURL(), "backup/ ",  repos.GetName())
+		}
+
+
 	}
 
 	if err != nil {
@@ -83,9 +106,19 @@ func CloneAllPublicRepos(username string) {
 
 func GetStats(username string) {
 
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: getAuthToken()},
+	)
+
 	ctx := context.Background()
 
-	client := github.NewClient(nil)
+	tc := oauth2.NewClient(ctx, ts)
+
+	client := github.NewClient(tc)
+
+	if username == "PERSONAL_ACCESS_TOKEN" {
+		username = ""
+	}
 
 	repos, _, err := client.Repositories.List(ctx, username, nil)
 
