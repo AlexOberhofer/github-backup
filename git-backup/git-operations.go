@@ -64,6 +64,7 @@ func DoACloneDir(url string, dir string, repositoryName string) {
 		URL:               url,
 		RecurseSubmodules: git.DefaultSubmoduleRecursionDepth,
 	})
+
 }
 
 func CloneAllRepos(username string) {
@@ -82,20 +83,24 @@ func CloneAllRepos(username string) {
 		username = ""
 	}
 
-	repos, _, err := client.Repositories.List(ctx, username, nil)
+	optPub := &github.RepositoryListOptions{Affiliation: "owner", Sort: "updated", Direction: "desc", Visibility: "public"}
+	optPrivate := &github.RepositoryListOptions{Affiliation: "owner", Sort: "updated", Direction: "desc", Visibility: "private"}
 
-	for _, repos := range repos {
-		if repos.GetPrivate() == true {
-			urlStrings := strings.Split(repos.GetGitURL(), "//")
-			repoName := urlStrings[1]
-			cloneUrl := "https://" + getAuthToken() + ":x-oauth-basic@" + repoName
+	pubRepos, _, err := client.Repositories.List(ctx, "", optPub)
 
-			DoACloneDir(cloneUrl, getBackupDirName() + "/", repos.GetName())
-		} else {
-			DoACloneDir(repos.GetGitURL(), getBackupDirName() + "/",  repos.GetName())
-		}
+	privateRepos, _, err := client.Repositories.List(ctx, "", optPrivate)
 
+	for _, repos := range pubRepos {
+		DoACloneDir(repos.GetGitURL(), getBackupDirName() + "/",  repos.GetName())
 
+	}
+
+	for _, repos := range privateRepos {
+		urlStrings := strings.Split(repos.GetGitURL(), "//")
+		repoName := urlStrings[1]
+		cloneUrl := "https://" + getAuthToken() + ":x-oauth-basic@" + repoName
+
+		DoACloneDir(cloneUrl, getBackupDirName() + "/", repos.GetName())
 	}
 
 	if err != nil {

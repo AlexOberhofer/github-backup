@@ -73,6 +73,10 @@ func main() {
 
 		zipit(getBackupDirName() + "/", getBackupDirName() + ".zip")
 
+		/*err := os.RemoveAll(getBackupDirName() + "/")
+		if err != nil {
+			log.Fatal(err)
+		}*/
 
 		fmt.Printf("###################################################################################\n")
 		fmt.Printf("# Zip finished: %s\n", GetCurrentTimeStamp())
